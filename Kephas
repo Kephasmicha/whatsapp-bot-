@@ -1,0 +1,21 @@
+from flask import Flask, request
+from twilio.twiml.messaging_response import MessagingResponse
+
+app = Flask(__name__)
+
+@app.route("/bot", methods=['POST'])
+def bot():
+    incoming_msg = request.form.get('Body').lower()
+    response = MessagingResponse()
+
+    if "hello" in incoming_msg:
+        response.message("Hi there! How can I help you?")
+    elif "bye" in incoming_msg:
+        response.message("Goodbye! Have a great day!")
+    else:
+        response.message("Sorry, I didn't understand that.")
+
+    return str(response)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
